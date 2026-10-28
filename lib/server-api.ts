@@ -1,4 +1,4 @@
-// Server components reach the backend directly (inside Docker: http://backend:5000)
+// Server components reach the backend directly (inside Docker: http://igniteddreams-backend:5000)
 const SERVER_API_URL =
   process.env.API_INTERNAL_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
