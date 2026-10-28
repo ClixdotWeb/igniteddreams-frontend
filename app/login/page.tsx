@@ -139,10 +139,18 @@ function LoginContent() {
             </form>
 
             <div className="mt-6 pt-4 border-t border-aviation-border text-center text-xs text-aviation-muted">
-              Not enrolled yet?{" "}
-              <Link href="/courses" className="font-bold text-aviation-black hover:underline">
-                Choose a course &amp; enroll
-              </Link>
+              <div>
+                New student?{" "}
+                <Link href="/register" className="font-bold text-aviation-black hover:underline">
+                  Create an account
+                </Link>
+              </div>
+              <div className="mt-1.5">
+                Want to teach?{" "}
+                <Link href="/register/mentor" className="font-bold text-aviation-black hover:underline">
+                  Apply as a mentor
+                </Link>
+              </div>
             </div>
           </Card>
         </div>

@@ -26,6 +26,12 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [comingSoon, setComingSoon] = useState<string | null>(null);
+
+  const showComingSoon = (label: string) => {
+    setComingSoon(label);
+    window.setTimeout(() => setComingSoon(null), 2500);
+  };
   const pathname = usePathname();
   const { user } = useAuth();
 
@@ -47,8 +53,16 @@ export const Navbar: React.FC<NavbarProps> = () => {
 
   return (
     <>
+      {comingSoon && (
+        <div
+          role="status"
+          className="fixed top-4 left-1/2 -translate-x-1/2 z-[100000] px-4 py-2.5 rounded-full bg-[#0e271d] text-white text-xs font-semibold shadow-lg"
+        >
+          Our {comingSoon} page is coming soon!
+        </div>
+      )}
       {/* Top Bar (Dark Forest Green with Right Slanted Yellow Tab) - Scrolls off naturally with page */}
-      <div className="w-full bg-[#0e271d] text-white border-b border-white/10 select-none">
+      <div className="w-full bg-[#0e271d] text-white border-b border-white/10 select-none overflow-hidden">
         <div className="max-w-[1600px] mx-auto flex items-stretch justify-between min-h-[42px] sm:min-h-[44px] pl-5 sm:pl-8 lg:pl-12 pr-0">
           {/* Left Contact Details */}
           <div className="flex items-center flex-wrap gap-5 sm:gap-7 text-[11px] sm:text-[12px] font-medium py-1.5 text-slate-300">
@@ -90,41 +104,23 @@ export const Navbar: React.FC<NavbarProps> = () => {
               style={{ borderRadius: "6px" }}
             />
             <div className="relative z-10 flex items-center gap-2 sm:gap-2.5">
-              <a
-                href="#"
-                aria-label="Facebook"
-                className="hidden sm:flex w-7 h-7 rounded-full bg-[#0e271d]/10 hover:bg-[#0e271d] text-[#0e271d] hover:text-[#F5C400] items-center justify-center transition-all hover:scale-110 active:scale-95 shadow-xs"
-              >
-                <Facebook className="w-3.5 h-3.5" />
-              </a>
-              <a
-                href="#"
-                aria-label="Twitter"
-                className="hidden sm:flex w-7 h-7 rounded-full bg-[#0e271d]/10 hover:bg-[#0e271d] text-[#0e271d] hover:text-[#F5C400] items-center justify-center transition-all hover:scale-110 active:scale-95 shadow-xs"
-              >
-                <Twitter className="w-3.5 h-3.5" />
-              </a>
-              <a
-                href="#"
-                aria-label="Instagram"
-                className="w-7 h-7 rounded-full bg-[#0e271d]/10 hover:bg-[#0e271d] text-[#0e271d] hover:text-[#F5C400] flex items-center justify-center transition-all hover:scale-110 active:scale-95 shadow-xs"
-              >
-                <Instagram className="w-3.5 h-3.5" />
-              </a>
-              <a
-                href="#"
-                aria-label="LinkedIn"
-                className="w-7 h-7 rounded-full bg-[#0e271d]/10 hover:bg-[#0e271d] text-[#0e271d] hover:text-[#F5C400] flex items-center justify-center transition-all hover:scale-110 active:scale-95 shadow-xs"
-              >
-                <Linkedin className="w-3.5 h-3.5" />
-              </a>
-              <a
-                href="#"
-                aria-label="YouTube"
-                className="w-7 h-7 rounded-full bg-[#0e271d]/10 hover:bg-[#0e271d] text-[#0e271d] hover:text-[#F5C400] flex items-center justify-center transition-all hover:scale-110 active:scale-95 shadow-xs"
-              >
-                <Youtube className="w-3.5 h-3.5" />
-              </a>
+              {[
+                { label: "Facebook", Icon: Facebook, mobile: false },
+                { label: "Twitter", Icon: Twitter, mobile: false },
+                { label: "Instagram", Icon: Instagram, mobile: true },
+                { label: "LinkedIn", Icon: Linkedin, mobile: true },
+                { label: "YouTube", Icon: Youtube, mobile: true },
+              ].map(({ label, Icon, mobile }) => (
+                <button
+                  key={label}
+                  type="button"
+                  aria-label={`${label} (coming soon)`}
+                  onClick={() => showComingSoon(label)}
+                  className={`${mobile ? "flex" : "hidden sm:flex"} w-7 h-7 rounded-full bg-[#0e271d]/10 hover:bg-[#0e271d] text-[#0e271d] hover:text-[#F5C400] items-center justify-center transition-all hover:scale-110 active:scale-95 shadow-xs`}
+                >
+                  <Icon className="w-3.5 h-3.5" />
+                </button>
+              ))}
             </div>
           </div>
         </div>

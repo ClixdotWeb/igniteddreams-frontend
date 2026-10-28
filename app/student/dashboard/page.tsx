@@ -226,11 +226,11 @@ export default function StudentDashboardPage() {
               <h2 className="text-lg font-bold text-aviation-black font-heading">
                 Recent Class Recordings
               </h2>
-              <Badge variant="yellow" size="sm">
+              <Badge variant="yellow" size="sm" className="whitespace-nowrap shrink-0">
                 7-Day Expiry
               </Badge>
             </div>
-            <Link href="/student/recordings" className="text-xs font-bold text-aviation-black hover:underline flex items-center gap-1">
+            <Link href="/student/recordings" className="text-xs font-bold text-aviation-black hover:underline flex items-center gap-1 whitespace-nowrap shrink-0">
               View All <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>

@@ -13,6 +13,7 @@
   }
 
   html {
+    overflow-x: clip;
     font-family: var(--font-plus-jakarta), 'Plus Jakarta Sans', var(--font-inter), 'Inter', system-ui, -apple-system, sans-serif;
     letter-spacing: -0.015em;
   }

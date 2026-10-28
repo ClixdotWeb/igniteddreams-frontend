@@ -58,6 +58,20 @@ export default function AdminInstructorsPage() {
     loadInstructors();
   }, []);
 
+  const setStatus = async (ins: InstructorItem, status: "ACTIVE" | "INACTIVE" | "SUSPENDED") => {
+    const verb = status === "ACTIVE" ? (ins.status === "INACTIVE" ? "Approve" : "Re-activate") : status === "SUSPENDED" ? "Suspend" : "Reject";
+    if (!confirm(`${verb} ${ins.name}?`)) return;
+    try {
+      await api.patch(`/admin/instructors/${ins.id}/status`, { status });
+      loadInstructors();
+    } catch (err: unknown) {
+      alert(err instanceof Error ? err.message : "Failed to update mentor");
+    }
+  };
+
+  const pendingCount = instructors.filter((i) => i.status === "INACTIVE").length;
+  const sorted = [...instructors].sort((a, b) => Number(b.status === "INACTIVE") - Number(a.status === "INACTIVE"));
+
   const handleCreateInstructor = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -99,16 +113,22 @@ export default function AdminInstructorsPage() {
         </Button>
       </div>
 
+      {pendingCount > 0 && (
+        <div className="p-3.5 rounded-lg bg-amber-50 border border-amber-300 text-amber-900 text-xs font-semibold">
+          {pendingCount} mentor application{pendingCount > 1 ? "s" : ""} waiting for approval (shown first below).
+        </div>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {instructors.map((ins) => (
+        {sorted.map((ins) => (
           <Card key={ins.id} padding="lg" variant="default" className="flex flex-col justify-between">
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <Badge variant="yellow" size="sm">
                   {ins.instructorProfile?.employeeId || "INS-ID"}
                 </Badge>
-                <Badge variant={ins.status === "ACTIVE" ? "ready" : "expired"} size="sm">
-                  {ins.status}
+                <Badge variant={ins.status === "ACTIVE" ? "ready" : ins.status === "INACTIVE" ? "expiring" : "expired"} size="sm">
+                  {ins.status === "INACTIVE" ? "PENDING APPROVAL" : ins.status}
                 </Badge>
               </div>
 
@@ -133,7 +153,20 @@ export default function AdminInstructorsPage() {
 
             <div className="mt-4 pt-3 border-t border-aviation-border flex items-center justify-between text-xs text-aviation-muted">
               <span>Classes Conducted: <strong className="text-aviation-black font-mono">{ins._count?.taughtClasses || 0}</strong></span>
-              <span className="text-aviation-charcoal font-semibold">Active Instructor</span>
+              <div className="flex items-center gap-2">
+                {ins.status === "INACTIVE" && (
+                  <>
+                    <Button variant="ghost" size="sm" onClick={() => setStatus(ins, "SUSPENDED")}>Reject</Button>
+                    <Button variant="primary" size="sm" onClick={() => setStatus(ins, "ACTIVE")}>Approve</Button>
+                  </>
+                )}
+                {ins.status === "ACTIVE" && (
+                  <Button variant="ghost" size="sm" onClick={() => setStatus(ins, "SUSPENDED")}>Suspend</Button>
+                )}
+                {ins.status === "SUSPENDED" && (
+                  <Button variant="ghost" size="sm" onClick={() => setStatus(ins, "ACTIVE")}>Re-activate</Button>
+                )}
+              </div>
             </div>
           </Card>
         ))}

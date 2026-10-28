@@ -210,7 +210,7 @@ export default function CoursesPage() {
         {loadError && (
           <div className="p-6 rounded-2xl bg-red-50 border border-red-200 text-sm text-red-800 flex items-center gap-3">
             <AlertCircle className="w-5 h-5 shrink-0" />
-            <span>Courses could not be loaded right now ({loadError}). Please refresh the page.</span>
+            <span className="min-w-0 break-words">Courses could not be loaded right now ({loadError}). Please refresh the page.</span>
           </div>
         )}
 

@@ -155,6 +155,12 @@ export default function RegisterPage() {
               <Link href="/login" className="font-bold text-aviation-black hover:underline">
                 Sign In
               </Link>
+              <div className="mt-1.5">
+                Want to teach?{" "}
+                <Link href="/register/mentor" className="font-bold text-aviation-black hover:underline">
+                  Apply as a mentor
+                </Link>
+              </div>
             </div>
           </Card>
         </div>

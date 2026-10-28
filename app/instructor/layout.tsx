@@ -6,7 +6,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 import { useRequireRole } from "@/lib/use-require-role";
 import { GraduationCap, LayoutDashboard, Calendar, Video, Clock, LogOut, Menu, X, Users, KeyRound } from "lucide-react";
-import Badge from "@/components/ui/Badge";
 
 export default function InstructorLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -98,16 +97,13 @@ export default function InstructorLayout({ children }: { children: React.ReactNo
             >
               {isMobileNavOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
-            <span className="text-xs font-mono font-bold text-aviation-muted">
+            <span className="hidden sm:inline text-xs font-mono font-bold text-aviation-muted">
               FACULTY INSTRUCTION DESK
             </span>
           </div>
 
-          <div className="flex items-center gap-4">
-            <Badge variant="yellow" size="sm">
-              LiveKit Cloud Ready
-            </Badge>
-            <span className="text-xs font-bold text-aviation-black">{user?.name}</span>
+          <div className="flex items-center gap-4 min-w-0">
+            <span className="text-xs font-bold text-aviation-black truncate">{user?.name}</span>
           </div>
         </header>
 

@@ -25,6 +25,7 @@ import {
   Mail,
   Library,
   KeyRound,
+  ShieldCheck,
 } from "lucide-react";
 import Badge from "@/components/ui/Badge";
 
@@ -59,6 +60,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       items: [
         { name: "Enrolled Students", href: "/admin/students", icon: GraduationCap },
         { name: "Faculty / Mentors", href: "/admin/instructors", icon: Users },
+        { name: "Administrators", href: "/admin/admins", icon: ShieldCheck },
       ],
     },
     {
@@ -149,7 +151,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                       <span>{item.name}</span>
                     </div>
                     {item.badge && !isActive && (
-                      <Badge variant="yellow" size="sm">
+                      <Badge variant="yellow" size="sm" className="whitespace-nowrap shrink-0">
                         {item.badge}
                       </Badge>
                     )}
@@ -190,16 +192,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             >
               {isMobileNavOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
-            <span className="text-xs font-mono font-bold text-aviation-muted">
-              ACADEMY ADMINISTRATION SAAS
+            <span className="hidden sm:inline text-xs font-mono font-bold text-aviation-muted">
+              ACADEMY ADMINISTRATION
             </span>
           </div>
 
-          <div className="flex items-center gap-4">
-            <Badge variant="yellow" size="sm">
-              R2 Storage Active
-            </Badge>
-            <span className="text-xs font-bold text-aviation-black">{user?.name}</span>
+          <div className="flex items-center gap-4 min-w-0">
+            <span className="text-xs font-bold text-aviation-black truncate">{user?.name}</span>
           </div>
         </header>
 

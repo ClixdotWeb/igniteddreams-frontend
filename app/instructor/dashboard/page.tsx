@@ -208,15 +208,24 @@ export default function InstructorDashboardPage() {
                       {cls.status}
                     </Badge>
 
-                    <Button
-                      variant="dark"
-                      size="sm"
-                      onClick={() => handleStartClass(cls.id)}
-                      isLoading={actionLoading === cls.id}
-                      leftIcon={<Play className="w-3.5 h-3.5 text-aviation-yellow" />}
-                    >
-                      Start Live Class
-                    </Button>
+                    {cls.status === "SCHEDULED" && (
+                      <Button
+                        variant="dark"
+                        size="sm"
+                        onClick={() => handleStartClass(cls.id)}
+                        isLoading={actionLoading === cls.id}
+                        leftIcon={<Play className="w-3.5 h-3.5 text-aviation-yellow" />}
+                      >
+                        Start Live Class
+                      </Button>
+                    )}
+                    {cls.status === "LIVE" && (
+                      <Link href={`/classroom/${cls.id}`}>
+                        <Button variant="primary" size="sm" rightIcon={<ArrowRight className="w-3.5 h-3.5" />}>
+                          Enter Classroom
+                        </Button>
+                      </Link>
+                    )}
                   </div>
                 </Card>
               );
@@ -225,6 +234,32 @@ export default function InstructorDashboardPage() {
         ) : (
           <Card padding="md" className="text-center py-8">
             <p className="text-xs text-aviation-muted">No more classes scheduled for today.</p>
+          </Card>
+        )}
+      </div>
+
+      {/* Upcoming Classes */}
+      <div className="space-y-4">
+        <h2 className="text-lg font-bold text-aviation-black font-heading">Upcoming Classes</h2>
+        {data?.upcomingClasses && data.upcomingClasses.length > 0 ? (
+          <Card padding="none" variant="default" className="divide-y divide-aviation-border">
+            {data.upcomingClasses.map((cls) => (
+              <div key={cls.id} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div className="min-w-0">
+                  <div className="font-bold text-sm text-aviation-black truncate">{cls.title}</div>
+                  <div className="text-xs text-aviation-muted truncate">
+                    {cls.course.code} • {cls.batch.name}
+                  </div>
+                </div>
+                <span className="self-start sm:self-auto shrink-0 text-xs font-semibold text-aviation-yellowDeep bg-aviation-yellow/10 px-2 py-0.5 rounded font-mono whitespace-nowrap">
+                  {new Date(cls.startTime).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}
+                </span>
+              </div>
+            ))}
+          </Card>
+        ) : (
+          <Card padding="md" className="text-center py-8">
+            <p className="text-xs text-aviation-muted">No upcoming classes scheduled.</p>
           </Card>
         )}
       </div>
@@ -254,6 +289,11 @@ export default function InstructorDashboardPage() {
             </Card>
           ))}
         </div>
+        {data?.assignedBatches.length === 0 && (
+          <Card padding="md" className="text-center py-8">
+            <p className="text-xs text-aviation-muted">No batches assigned to you yet.</p>
+          </Card>
+        )}
       </div>
     </div>
   );
