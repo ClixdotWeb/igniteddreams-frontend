@@ -151,7 +151,9 @@ export default function StudentRecordingsPage() {
       ) : filteredRecordings.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredRecordings.map((rec) => {
-            const isUrgent = !rec.isExpired && rec.hoursRemaining <= 24;
+            // Not playable yet: the class just ended and the video is still being saved
+            const isProcessing = !rec.isExpired && !["READY", "EXPIRING_SOON"].includes(rec.status);
+            const isUrgent = !rec.isExpired && !isProcessing && rec.hoursRemaining <= 24;
             const isWarning = !rec.isExpired && rec.hoursRemaining <= 48 && !isUrgent;
 
             return (
@@ -171,6 +173,10 @@ export default function StudentRecordingsPage() {
                       <Badge variant="expired" size="sm">
                         Recording Expired
                       </Badge>
+                    ) : isProcessing ? (
+                      <Badge variant="processing" size="sm" dot>
+                        Processing…
+                      </Badge>
                     ) : isUrgent ? (
                       <Badge variant="expiring" size="sm" dot>
                         Expires in {rec.hoursRemaining}h!
@@ -186,7 +192,7 @@ export default function StudentRecordingsPage() {
                     )}
 
                     <span className="text-xs font-mono font-bold text-aviation-muted">
-                      {formatDuration(rec.durationSeconds)}
+                      {isProcessing || !rec.durationSeconds ? "—" : formatDuration(rec.durationSeconds)}
                     </span>
                   </div>
 
@@ -200,11 +206,13 @@ export default function StudentRecordingsPage() {
                     <div>
                       Available until:{" "}
                       <span className="font-mono text-aviation-charcoal font-semibold">
-                        {new Date(rec.expiresAt).toLocaleDateString("en-IN", {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        })}
+                        {rec.expiresAt
+                          ? new Date(rec.expiresAt).toLocaleDateString("en-IN", {
+                              month: "short",
+                              day: "numeric",
+                              year: "numeric",
+                            })
+                          : "7 days after it is ready"}
                       </span>
                     </div>
                   </div>
@@ -215,6 +223,10 @@ export default function StudentRecordingsPage() {
                   {rec.isExpired ? (
                     <div className="text-xs text-aviation-muted font-medium py-1">
                       7-day access window closed.
+                    </div>
+                  ) : isProcessing ? (
+                    <div className="text-xs text-aviation-muted font-medium py-1">
+                      The recording is being saved. Please check again in a few minutes.
                     </div>
                   ) : (
                     <>
