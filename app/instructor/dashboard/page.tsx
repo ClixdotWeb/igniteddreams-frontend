@@ -149,7 +149,7 @@ export default function InstructorDashboardPage() {
               </h2>
               <div className="text-xs text-gray-300 flex items-center gap-4">
                 <span>Active Students: <strong className="text-aviation-yellow">{data.liveClass._count.attendances}</strong></span>
-                <span>Recording: <strong className="text-red-400">LiveKit Egress 720p Active</strong></span>
+                <span>Recording: <strong className="text-red-400">On (starts when a camera, mic or screen is shared)</strong></span>
               </div>
             </div>
 

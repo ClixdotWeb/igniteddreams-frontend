@@ -233,7 +233,7 @@ export default function HomePage() {
       price: "₹25,000 (Tax Included)",
       description:
         "Specialized training for air cargo freight forwarders, pharma cold-chain handlers, and airport cargo terminal supervisors adhering strictly to IATA standards.",
-      image: "https://images.unsplash.com/photo-1519074069444-1ba4ea16e879?auto=format&fit=crop&w=800&q=85",
+      image: "https://images.unsplash.com/photo-1569629743817-70d8db6c323b?auto=format&fit=crop&w=800&q=85",
       tags: ["IATA DGR Cargo"],
       bottomColor: "#0A1624",
       midColor: "rgba(10, 22, 36, 0.92)",
